@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/axios@0.24.0/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/qs@6.10.2/dist/qs.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    hello
+    <input id="fileInput" type="file" multiple />
+    <script>
+        async function test() {
+            const res = await axios.get('/person/find',{
+                params: {
+                    name: '光',
+                    age: 20
+                }
+            })
+            console.log(res);
+             const res1 = await axios.get('/person/77')
+            console.log(res1);
+            const res2 = await axios.post('/person', Qs.stringify({
+                name: '光',
+                age: 20
+            }), {
+                headers: { 'content-type': 'application/x-www-form-urlencoded' }
+            });
+            console.log(res2);  
+            const res3 = await axios.post('/person/find2', {
+                name: '光',
+                age: 20
+            });
+            console.log(res3);  
+        }
+        test()
+    </script>
+</body>
+</html>
