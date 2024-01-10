@@ -15,12 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
+const test_filter_1 = require("./test.filter");
+const test_guard_1 = require("./test.guard");
 let AppController = class AppController {
     constructor(appservice) {
         this.appservice = appservice;
     }
     getHello() {
         console.log(this.guang);
+        throw new common_1.HttpException('xxx', common_1.HttpStatus.BAD_REQUEST);
         return this.appService.getHello();
     }
 };
@@ -36,12 +39,16 @@ __decorate([
 ], AppController.prototype, "guang", void 0);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseFilters)(test_filter_1.AaaFilter),
+    (0, common_1.UseGuards)(test_guard_1.AaaGuard),
+    (0, common_1.SetMetadata)('roles', ['admin']),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", String)
 ], AppController.prototype, "getHello", null);
 exports.AppController = AppController = __decorate([
     (0, common_1.Controller)(),
+    (0, common_1.SetMetadata)('roles', ['user']),
     __param(0, (0, common_1.Optional)()),
     __metadata("design:paramtypes", [app_service_1.AppService])
 ], AppController);

@@ -1,11 +1,14 @@
-import { Controller, Get, Inject, Optional } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Inject, Optional, Redirect, SetMetadata, UseFilters, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
 import { AppService } from './app.service';
+import { AaaFilter } from './test.filter';
+import { AaaGuard } from './test.guard';
 
 @Controller()
+@SetMetadata('roles', ['user'])
 export class AppController {
   // constructor(private readonly appService: AppService) {}
   @Inject(AppService)
-  private readonly appService:AppService;
+  private readonly appService: AppService;
 
   /**
    * 这些依赖如果没有的话，创建对象时会报错，
@@ -13,16 +16,20 @@ export class AppController {
    */
   @Optional()
   @Inject('Guang')
-  private readonly guang:Record<string,any>;
+  private readonly guang: Record<string, any>;
 
-  constructor(@Optional() private appservice:AppService){
-
-  }
+  constructor(@Optional() private appservice: AppService) {}
 
   @Get()
+  @UseFilters(AaaFilter)
+  @UseGuards(AaaGuard)
+  // @UseInterceptors(AaaFilter)
+  // @UsePipes(AaaFilter)
+  @SetMetadata('roles', ['admin'])
+  // @Redirect('')
   getHello(): string {
     console.log(this.guang);
-    
+    throw new HttpException('xxx', HttpStatus.BAD_REQUEST);
     return this.appService.getHello();
   }
 }
